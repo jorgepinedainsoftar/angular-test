@@ -1,10 +1,21 @@
 <form [formGroup]="formulario" name="formulario">
-<p>Form custom control</p>
+<!-- <p>Form custom control</p>
 <app-custom-input formControlName="identificacion"></app-custom-input>
 <p>valor: {{identificacion?.value}}</p>
 <p>dirty: {{identificacion?.dirty}}</p>
 <p>touched: {{identificacion?.touched}}</p>
 <p>errors: {{identificacion?.errors | json}}</p>
+<br>
+<button type="button" (click)="toogleDirty()">Alternar dirty </button>
+<button type="button" (click)="toogleTouched()">Alternar touched </button>
+<button type="button" (click)="alternarValidacionRequerido()">Alternar requerido </button> -->
+<hr>
+<app-custom-calendar formControlName="fecha" [minDate]="minDate"></app-custom-calendar>
+<p><strong>En app.component</strong></p>
+<p>valor: {{fecha?.value}}</p>
+<p>dirty: {{fecha?.dirty}}</p>
+<p>touched: {{fecha?.touched}}</p>
+<p>errors: {{fecha?.errors | json}}</p>
 <br>
 <button type="button" (click)="toogleDirty()">Alternar dirty </button>
 <button type="button" (click)="toogleTouched()">Alternar touched </button>

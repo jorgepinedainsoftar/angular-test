@@ -9,6 +9,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 export class AppComponent implements OnInit, AfterViewInit {
   title = 'controlsapp';
   formulario:FormGroup;
+  minDate:Date;
 
   constructor(
     private fb: FormBuilder,
@@ -16,6 +17,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   ){
     this.formulario = this.crearFormulario();
     this.identificacion?.setValue("1234567");
+    this.minDate = new Date(2000, 2, 10);
   }
   ngAfterViewInit(): void {
     //this.cd.detectChanges();
@@ -29,36 +31,40 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   crearFormulario():FormGroup{
     return this.fb.group({
-      identificacion: new FormControl('', {validators: [Validators.required]})
+      identificacion: new FormControl('', {validators: [Validators.required]}),
+      fecha: new FormControl()
     })
   }
 
   toogleDirty(){
-    if (this.identificacion?.dirty) { 
-      this.identificacion?.markAsPristine();
+    if (this.fecha?.dirty) { 
+      this.fecha?.markAsPristine();
     } else {
-      this.identificacion?.markAsDirty();
+      this.fecha?.markAsDirty();
     }
   }
 
   toogleTouched(){
-    if (this.identificacion?.touched) { 
-      this.identificacion?.markAsUntouched();
+    if (this.fecha?.touched) { 
+      this.fecha?.markAsUntouched();
     } else {
-      this.identificacion?.markAsTouched();
+      this.fecha?.markAsTouched();
     }
   }
 
   alternarValidacionRequerido():void{
-    console.log(this.identificacion?.hasValidator(Validators.required));
-    if(this.identificacion?.hasValidator(Validators.required)){
-      this.identificacion.removeValidators(Validators.required);
+    console.log(this.fecha?.hasValidator(Validators.required));
+    if(this.fecha?.hasValidator(Validators.required)){
+      this.fecha.removeValidators(Validators.required);
     }else{
-      this.identificacion?.addValidators(Validators.required);
+      this.fecha?.addValidators(Validators.required);
     }
   }
 
   get identificacion(){
     return this.formulario.get("identificacion");
+  }
+  get fecha(){
+    return this.formulario.get("fecha");
   }
 }

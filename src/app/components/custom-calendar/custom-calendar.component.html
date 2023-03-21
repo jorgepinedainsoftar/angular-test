@@ -1,1 +1,19 @@
-<p>custom-calendar works!</p>
+<p-calendar 
+[(ngModel)]="value" 
+(onBlur)="blur($event)"
+(onInput)="validarFormatoEscritoDeFecha($event)"
+(onSelect)="select($event)"
+(onShow)="show()"
+(onClose)="close()"
+[keepInvalid]="true"
+[minDate]="minDate"
+[maxDate]="maxDate"
+[required]="required"
+[disabled]="disabled"
+#fecha="ngModel"></p-calendar>
+<p><strong>En custom-calendar.component</strong></p>
+<p>valor: {{fecha?.value}}</p>
+<p>dirty: {{fecha?.dirty}}</p>
+<p>touched: {{fecha?.touched}}</p>
+<p>errors: {{fecha?.errors | json}}</p>
+<hr>
