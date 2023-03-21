@@ -5,17 +5,21 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppComponent } from './app.component';
 import { CustomInputComponent } from './components/custom-input/custom-input.component';
+import { CustomCalendarComponent } from './components/custom-calendar/custom-calendar.component';
+import {CalendarModule} from 'primeng/calendar';
 
 @NgModule({
   declarations: [
     AppComponent,
-    CustomInputComponent
+    CustomInputComponent,
+    CustomCalendarComponent
   ],
   imports: [
     CommonModule,
     BrowserModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    CalendarModule
   ],
   providers: [],
   bootstrap: [AppComponent]

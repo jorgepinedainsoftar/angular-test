@@ -25,7 +25,7 @@ export class CustomInputComponent implements OnInit, ControlValueAccessor, Valid
   private control?:AbstractControl;
   @Input() disabled:boolean;
   @Input() required:boolean;
-  @ViewChild("campo") campo?:NgModel;
+  @ViewChild("campo") private campo?:NgModel;
 
   onChangeCallback = (_:any) =>  {
 
@@ -46,7 +46,7 @@ export class CustomInputComponent implements OnInit, ControlValueAccessor, Valid
   }
   ngAfterViewInit(): void {
     this.establecerPropiedadesCampo();
-    this.cd.detectChanges();
+    this.errorManual();this.cd.detectChanges();
   }
 
   ngOnInit(): void {
@@ -67,6 +67,7 @@ export class CustomInputComponent implements OnInit, ControlValueAccessor, Valid
     this.required = control.hasValidator(Validators.required) || false;
     this.control = control;
     this.establecerPropiedadesCampo();
+    console.log("validate: ", this.campo?.errors);
     return {...this.campo?.errors}
   }
 
@@ -108,11 +109,16 @@ export class CustomInputComponent implements OnInit, ControlValueAccessor, Valid
   }
   
   errorManual():void{
-    if(this.campo?.value && this.campo?.value.length > 5){
+    
+    if(this.value && this.value.length > 5){
       this.campo?.control.setErrors({lengthError: true});
+      
+      console.log("this: ", this);
+      console.log("errorManual: ", Object.keys(this));
     }else{
       this.removerError(this.campo?.control, "lengthError");
     }
+    console.log("errors: ", this.campo?.errors);
     this.onValidatorCallback(this.campo?.control);
   }
 

@@ -9,6 +9,6 @@ type="text"
 <p>valor en input: {{value}}</p>
 <p>dirty: {{campo?.control?.dirty}}</p>
 <p>touched: {{campo?.control?.touched}}</p>
-<p>errors in input: {{campo?.errors | json}}</p>
+<p>errors in input: {{campo.errors | json}}</p>
 <button type="button" (click)="errorManual()">generar error</button>
 <hr>
