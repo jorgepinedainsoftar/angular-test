@@ -1,6 +1,7 @@
 import { Component, forwardRef, Input, OnInit, ViewChild } from '@angular/core';
 import { AbstractControl, ControlValueAccessor, FormControl, NgModel, NG_VALIDATORS, NG_VALUE_ACCESSOR, ValidationErrors, Validator, Validators } from '@angular/forms';
 import * as moment from 'moment';
+import { PrimeNGConfig } from 'primeng/api';
 
 export const CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -42,12 +43,24 @@ export class CustomCalendarComponent implements OnInit, ControlValueAccessor, Va
 
   }
 
-  constructor() { 
+  constructor(
+    private config: PrimeNGConfig
+  ) { 
     this.disabled = false;
     this.required = false;
     this.panelVisible = false;
     this.minDate = new Date(-8640000000000000);
     this.maxDate = new Date(8640000000000000);
+    this.config.setTranslation({
+      "dayNames": ["Domingo", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado"],
+      "dayNamesShort": ["Dom", "Lun", "Mar", "Mie", "Jue", "Vie", "Sab"],
+      "dayNamesMin": ["Do","Lu","Ma","Mi","Ju","Vi","Sa"],
+      "monthNames": ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"],
+      "monthNamesShort": ["Ene", "Feb", "Mar", "Abr", "May", "Jun","Jul", "Ago", "Sep", "Oct", "Nov", "Dic"],
+      "emptyMessage": 'Resultados no encontrados',
+      "emptyFilterMessage": 'Resultados no encontrados',
+      "today": "Hoy"
+    });
   }
 
   get value(): any {
@@ -92,33 +105,41 @@ export class CustomCalendarComponent implements OnInit, ControlValueAccessor, Va
     const value = event.target.value;
     if(value != null && value != "" && !this.panelVisible){
       console.log("esFechaValida: ", this.esFechaValida(value), " - value: ", value);
-      if(this.esFechaValida(value)){
-        this.value = value;
-        console.log("event: ", value);
-      }else{
+      if(!this.esFechaValida(value)){
         this.fecha?.control.setErrors({dateformaterror: true});
-        this.onValidatorCallback(this.fecha?.control);
+      }else if(!this.esMayorOIgualAFechaMinima(value)){
+        this.fecha?.control.setErrors({mindate: true});
+      }else if(!this.esMenorOIgualAFechaMaxima(value)){
+        this.fecha?.control.setErrors({maxdate: true});
+      }else{
+        if(typeof value == "string"){
+          console.log("value es string");
+          this.value = new Date(value)
+        }
       }
     }
+    this.onValidatorCallback(this.fecha?.control);
     
   }
 
   select(event:any):void{
     console.log("select: ", event);
-    this.value = event;
+    //this.value = event;
   }
 
   show():void{
+    console.log("panelVisible: on");
     this.panelVisible = true;
   }
 
   close():void{
+    console.log("panelVisible: off");
     this.panelVisible = false;
   }
 
   public validarFormatoEscritoDeFecha(event:any){
     let v = event.target.value.replace(/\D/g,'').slice(0, 8);
-    if(event.inputType != 'deleteContentBackward'){
+    if(event.inputType != 'deleteContentBackward' && v.length <= 8){
       if (v.length >= 4) {
         v = `${v.slice(0,2)}/${v.slice(2,4)}/${v.slice(4)}`;
       }
@@ -130,7 +151,19 @@ export class CustomCalendarComponent implements OnInit, ControlValueAccessor, Va
   }
 
   public esFechaValida(d:any) {
-    return moment(d, "DD/MM/YYYY").isValid() && moment(d).isSameOrAfter(this.minDate) && moment(d).isSameOrBefore(this.maxDate);
+    const formatDate = d.split("/").reverse().join("-");
+    console.log("esFechaValida: ", d, "- reorder: ", formatDate);
+    return d.length >= 10 && moment(d, "DD/MM/YYYY").isValid();
+  }
+
+  public esMayorOIgualAFechaMinima(date:string){
+    const formatDate = date.split("/").reverse().join("-");
+    return moment(formatDate).isSameOrAfter(this.minDate);
+  }
+
+  public esMenorOIgualAFechaMaxima(date:string){
+    const formatDate = date.split("/").reverse().join("-");
+    return moment(formatDate).isSameOrBefore(this.maxDate);
   }
 
   removerError(campo: FormControl | undefined, error:string){

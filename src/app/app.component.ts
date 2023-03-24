@@ -10,6 +10,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   title = 'controlsapp';
   formulario:FormGroup;
   minDate:Date;
+  maxDate:Date;
 
   constructor(
     private fb: FormBuilder,
@@ -17,7 +18,8 @@ export class AppComponent implements OnInit, AfterViewInit {
   ){
     this.formulario = this.crearFormulario();
     this.identificacion?.setValue("1234567");
-    this.minDate = new Date(2000, 2, 10);
+    this.minDate = new Date("2000-02-05T00:00:00");
+    this.maxDate = new Date("2025-04-30T00:00:00");
   }
   ngAfterViewInit(): void {
     //this.cd.detectChanges();
@@ -32,7 +34,8 @@ export class AppComponent implements OnInit, AfterViewInit {
   crearFormulario():FormGroup{
     return this.fb.group({
       identificacion: new FormControl('', {validators: [Validators.required]}),
-      fecha: new FormControl()
+      fecha: new FormControl(),
+      fecha2: new FormControl()
     })
   }
 

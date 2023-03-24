@@ -10,7 +10,7 @@
 <button type="button" (click)="toogleTouched()">Alternar touched </button>
 <button type="button" (click)="alternarValidacionRequerido()">Alternar requerido </button> -->
 <hr>
-<app-custom-calendar formControlName="fecha" [minDate]="minDate"></app-custom-calendar>
+<app-custom-calendar formControlName="fecha" [minDate]="minDate" [maxDate]="maxDate"></app-custom-calendar>
 <p><strong>En app.component</strong></p>
 <p>valor: {{fecha?.value}}</p>
 <p>dirty: {{fecha?.dirty}}</p>
@@ -20,4 +20,6 @@
 <button type="button" (click)="toogleDirty()">Alternar dirty </button>
 <button type="button" (click)="toogleTouched()">Alternar touched </button>
 <button type="button" (click)="alternarValidacionRequerido()">Alternar requerido </button>
+<hr>
+<app-custom-calendar formControlName="fecha2"></app-custom-calendar>
 </form>
